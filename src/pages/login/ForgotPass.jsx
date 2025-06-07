@@ -1,18 +1,39 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import InputField from "../../components/inputFeild";
+import InputField from "../../components/InputFeild";
 import { Outlet, useNavigate } from 'react-router-dom';
 import Button from "../../components/Button";
+import { FormData } from "../../main";
+import { useContext } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { apiClient } from "../../api/apiClient";
 
 const ForgotPass = () => {
   const navigate = useNavigate();
+  const {formData, setFormData} = useContext(FormData)
+  const emailVerify = useMutation({
+    mutationFn:(data)=>
+      apiClient({
+        url:"https://college-backend-tyea.onrender.com/api/sendOtp",
+        method:"POST",
+        data
+      }),
+      onSuccess:({message})=>{
+navigate('/otp-verify')
+      },
+      onError:({message})=>{
+        alert(message)
+      }
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
+    emailVerify.mutate(data)
     console.log(data);
+    setFormData(data)
   };
   function handleBackBtn(){
 navigate('/login')
@@ -32,7 +53,7 @@ navigate('/login')
             errors={errors}
             className="p-2 flex items-center gap-[10px]  bg-transparent border-2 border-[#999999] rounded-[6px] w-full"
           />
-          <Button type="submit" lable="Submit" btnClass="bg-[#0c21c1] rounded-[24px] text-white text-[1rem] font-medium text-center py-[10px] active:scale-95 duration-300 w-full"/>        </form>
+          <Button type="submit" lable={emailVerify.isPending ? "Loading.." :"Submit"} btnClass="bg-[#0c21c1] rounded-[24px] text-white text-[1rem] font-medium text-center py-[10px] active:scale-95 duration-300 w-full"/>        </form>
       </div>
       <Outlet/>
     </>

@@ -32,7 +32,7 @@ const Resources = () => {
 
   return (
     <Section>
-    <Hero text="Empowering future through quality education.">Download Resources</Hero>
+    <Hero >Download Resources</Hero>
 
       <div className="pt-[40px]">
       

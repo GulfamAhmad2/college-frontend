@@ -14,7 +14,7 @@ const RegistrationVerify = () => {
   const mutation = useMutation({
     mutationFn: (data) =>
       apiClient({
-        url: "http://localhost:5000/api/users/verify",
+        url: "https://college-backend-tyea.onrender.com/api/verify",
         method: "POST",
         data: data,
       }),

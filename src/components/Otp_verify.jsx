@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import Button from "../components/Button";
 import ResendOtpButton from "./ResendOtpButton";
 
-const Otp_verify = ({ getOpt, otpError }) => {
+const Otp_verify = ({ getOpt, otpError, verifyOtp }) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const inputsRef = useRef([]);
   const handleOpt = () => {
@@ -45,7 +45,7 @@ const Otp_verify = ({ getOpt, otpError }) => {
 
   return (
     <div className="relative w-[350px] flex flex-col items-center mt-4 justify-center mx-auto bg-white p-6 rounded-[6px]">
-      <h2 className="text-[1.2rem] mb-8 mt-5">Otp-Verify</h2>
+      <h2 className="text-[1.2rem] mb-8 mt-5">Verify Email otp</h2>
       <div></div>
       <div className="flex flex-col gap-8">
         <div>
@@ -53,7 +53,7 @@ const Otp_verify = ({ getOpt, otpError }) => {
             {otp.map((digit, index) => (
               <input
                 key={index}
-                type="text"
+                type="tel"
                 value={digit}
                 onChange={(e) => handleChange(e.target.value, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
@@ -71,9 +71,9 @@ const Otp_verify = ({ getOpt, otpError }) => {
             onClick={() => handleOpt()}
             className="bg-[#0c21c1] rounded-[24px] text-white text-[1rem] font-medium text-center py-[10px] active:scale-95 duration-300 w-full"
           >
-            Verify
+           {verifyOtp?.isPending ? "Loading..." : "Verify"}
           </button>
-          <p className="text-center text-red-500" >Do not refresh</p>
+          <p className="text-center text-red-500" >Do not refresh <br/> check email spam for otp</p>
           <div className="flex gap-2 mt-1 justify-end">
             <ResendOtpButton />
           </div>

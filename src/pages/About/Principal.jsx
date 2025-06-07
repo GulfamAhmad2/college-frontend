@@ -7,7 +7,7 @@ import Msg from "../../components/Msg";
 const Principal = () => {
   return (
     <Section>
-      <Hero text="Empowering future through quality education.">Principal Message</Hero>
+      <Hero >Principal Message</Hero>
       <Msg
         title="Principal Message"
         name="Mr. cb here"

@@ -4,14 +4,14 @@ import { apiClient } from '../api/apiClient';
 import { FormData } from '../main';
 
 const ResendOtpButton = () => {
-  const [countdown, setCountdown] = useState(120); // 2 minutes in seconds
+  const [countdown, setCountdown] = useState(60); // 2 minutes in seconds
   const [isResendEnabled, setIsResendEnabled] = useState(false);
   const { formData } = useContext(FormData);
 
   const mutation = useMutation({
     mutationFn: (email) =>
       apiClient({
-        url: "http://localhost:5000/api/users/resendOtp",
+        url: "https://college-backend-tyea.onrender.com/api/resendOtp",
         method: "POST",
         data: { email }, // Correct data structure
       }),
@@ -25,7 +25,7 @@ const ResendOtpButton = () => {
 
   const handleResendOtp = () => {
     if (isResendEnabled && formData?.email) {
-      setCountdown(120);
+      setCountdown(60);
       setIsResendEnabled(false);
       mutation.mutate(formData?.email);
     }

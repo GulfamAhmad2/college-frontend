@@ -17,26 +17,51 @@ import UpcomingEvent from "../components/UpcomingEvent";
 import CardCom from "../components/CardCom";
 import { Link } from "react-router-dom";
 import Testimonial from "../components/Testimonial";
-import UpcomingEvents from "../components/Event";
+import UpcomingEvents, { EventCard } from "../components/Event";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { apiClient } from "../api/apiClient";
+import { useEventAbout } from "../../hooks/EventAboutProvider";
 
 const Home = () => {
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/users/check-auth",
-          { withCredentials: true }
-        );
-        console.log(response);
-      } catch (error) {
-        console.error("Auto-login failed:", error);
-      }
-    };
+  const { events, abouts } = useEventAbout();
+  const { data: slides } = useQuery({
+    queryKey: ["slides"],
+    queryFn: () =>
+      apiClient({
+        url: "https://college-backend-tyea.onrender.com/api/slide",
+        method: "GET",
+      }),
 
-    checkAuth();
-  }, []);
+    onError: ({ response }) => alert(response.data.messsage),
+  });
+  const { data: notices } = useQuery({
+    queryKey: ["notice"],
+    queryFn: () =>
+      apiClient({
+        url: "https://college-backend-tyea.onrender.com/api/notice",
+        method: "GET",
+      }),
+    onError: ({ response }) => alert(response.data.messsage),
+  });
+
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://college-backend-tyea.onrender.com/api/check-auth",
+  //         { withCredentials: true }
+  //       );
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.error("Auto-login failed:", error);
+  //     }
+  //   };
+
+  //   checkAuth();
+  // }, []);
+
   const settings = {
     infinite: true,
     lazyLoad: true,
@@ -48,11 +73,11 @@ const Home = () => {
     arrows: false,
   };
 
-  const slides = [
-    { img: hero_img_1 },
-    { img: hero_img_2 },
-    { img: hero_img_3 },
-  ];
+  // const slides = [
+  //   { img: hero_img_1 },
+  //   { img: hero_img_2 },
+  //   { img: hero_img_3 },
+  // ];
   return (
     <Section className="flex flex-col lg:flex-row gap-[30px]">
       {/* Left Section: Slider and Content */}
@@ -63,33 +88,31 @@ const Home = () => {
           ))}
         </Slider>
         {/* About Us Section */}
-        <div className="mt-[30px] bg-color-4 p-5">
-          <Title>About Us</Title>
-          <p className="text-color-13 text-base font-normal leading-normal mt-4 pb-2 text-justify">
-            Gyanodaya College is dedicated to nurturing intellectual and
-            personal growth, providing students with an environment where they
-            can thrive academically and socially...
-            <Button link="/about" className="text-color-1">
-              Know More
-            </Button>
-          </p>
-        </div>
+        <CardCom header="About Us" className="mt-[30px] max-h-[550px]">
+          <Abouts abouts={abouts} />
+        </CardCom>
 
         {/* Upcoming Events Section */}
-        <CardCom header="Up Coming Event" className="mt-[30px] min-h-[300px]">
-          <UpcomingEvents />
+        <CardCom header="UpComing Event" className="mt-[30px] max-h-[550px] ">
+          {/* <UpcomingEvents />/ */}
+          <EventCard event={events?.events[0]} />
         </CardCom>
+        
       </div>
 
       {/* Right Section: Notices, Testimonials, Gallery */}
       <div className="flex-1">
-        <CardCom header="Notice" className="min-h-[408px]">
-          <div className="flex flex-col px-5">
-            {notices.map((item, index) => (
+        <CardCom
+          header="Notice"
+          className="max-h-[408px] min-h-[408px] border overflow-y-auto z-0"
+        >
+          <div className="flex flex-col px-5 relative ">
+            {notices?.map((item, index) => (
               <Link
-                className="capitalize border-b border-dashed border-b-color-8 text-base font-bold text-color-2 py-4"
+                className="border-b last:border-none border-dashed border-b-gray-500 capitalize  hover:underline cursor-pointer  text-base font-normal text-color-2 py-4 relative max-w-[400px] truncate"
                 key={index}
                 to={item.link}
+                target="_blank"
               >
                 {item.title}
               </Link>
@@ -106,19 +129,33 @@ const Home = () => {
   );
 };
 
+function Abouts({ abouts }) {
+  return (
+    <div className=" bg-color-4 p-5 ">
+      <p className="text-color-13 text-base font-normal leading-normal text-justify">
+        {abouts?.[0]?.content?.[0] + " "}
+        <Button link="/about" className="text-color-1">
+           Know More
+        </Button>
+      </p>
+    </div>
+  );
+}
+
 function Slide({ value }) {
+  console.log(value, "value")
   return (
     <div className="bg-color-4 p-[6px] w-full relative overflow-hidden">
       <img
         className="h-[396px] w-full object-cover"
-        src={value?.img}
+        src={`https://college-backend-tyea.onrender.com${value?.image}`}
         alt="hero_img"
       />
       <div className="p-[20px] bg-black/60 absolute left-[6px] bottom-[6px] text-color-4">
-        <h2 className="text-color-4 text-xl font-semibold">
-          Welcome to our website
-        </h2>
-        <p className="text-color-6 text-[1rem] font-medium">paragraph</p>
+        <h2 className="text-white text-xl font-semibold">{value?.title}</h2>
+        <p className="text-white/70 text-[1rem] font-medium">
+          {value?.paragraph}
+        </p>
       </div>
     </div>
   );

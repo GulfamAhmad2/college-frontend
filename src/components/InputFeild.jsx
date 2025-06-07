@@ -22,7 +22,7 @@ const InputField = ({
     if(type==="textarea" && newValue.length>maxLength){
       newValue = newValue.slice(0, maxLength);
     }
-    if (type === "number") {
+    if (type === "tel") {
       newValue = newValue.replace(/[^0-9]/g, "");
       if (newValue.length > maxLength) {
         newValue = newValue.slice(0, maxLength);
@@ -33,7 +33,7 @@ const InputField = ({
   return (
     <div className={`${labClass || ""}`}>
       {label && (
-        <label className="text-[#999999] text-[13px] font-medium">
+        <label className="text-[#999999] text-[14px] font-medium">
           {label}
         </label>
       )}

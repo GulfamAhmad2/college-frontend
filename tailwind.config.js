@@ -22,6 +22,7 @@ export default {
           
         },
       },
+      
       boxShadow: {
         custom: "0 2px 20px rgba(34, 30, 31, 0.4)",
       },

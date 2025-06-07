@@ -72,7 +72,7 @@ const Profile = () => {
   return (
     <>
      {
-      isEditing ? <div className='pt-[153px]'><EditCard setIsEditing={setIsEditing} loginData={loginData}/></div> : <div className="min-h-screen bg-gray-100 pt-[11rem]">
+      isEditing ? <div className=''><EditCard setIsEditing={setIsEditing} loginData={loginData}/></div> : <div className="min-h-screen bg-gray-100 pt=[15px]">
       {/* Profile Content */}
       <div className="px-4 md:px-8  pb-8 max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm p-6">
@@ -92,7 +92,7 @@ const Profile = () => {
             {userData.education.map((edu, index) => (
               <div key={index} className="mb-3">
                 <h3 className="font-medium text-gray-900">{edu.degree}</h3>
-                <p className="text-gray-600 text-sm">{edu.college}</p>
+                <p className="text-gray-600 text-sm">Mumbai University</p>
                 <p className="text-gray-500 text-sm">{edu.duration}</p>
               </div>
             ))}
@@ -118,7 +118,7 @@ const Profile = () => {
                 </svg>
                 <span className="text-gray-600">{userData.email}</span>
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <svg
                   className="w-5 h-5 text-gray-500 mr-3"
                   fill="none"
@@ -161,7 +161,7 @@ const Profile = () => {
                   
                     {userData.address}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -198,7 +198,7 @@ const EditCard = ({setIsEditing, loginData}) => {
   const mutation = useMutation({
     mutationFn: (data) =>
       apiClient({
-        url: "http://localhost:5000/api/users/updateUserData",
+        url: "https://college-backend-tyea.onrender.com/api/updateUserData",
         method: "PATCH",
         data: data,
       }),
@@ -244,7 +244,7 @@ const EditCard = ({setIsEditing, loginData}) => {
       placeholder="Email*"
       value={email}
     />
-    <InputField
+    {/* <InputField
       type="number"
       name="phone"
       register={register}
@@ -253,9 +253,9 @@ const EditCard = ({setIsEditing, loginData}) => {
       minLength={10}
       maxLength={10}
       value={phone}
-    />
+    /> */}
     <InputField
-      type="number"
+      type="tel"
       name="roll"
       register={register}
       errors={errors}
@@ -302,7 +302,7 @@ const EditCard = ({setIsEditing, loginData}) => {
       </div>
     </div>
 
-    <InputField
+    {/* <InputField
       type="textarea"
       name="address"
       register={register}
@@ -310,7 +310,7 @@ const EditCard = ({setIsEditing, loginData}) => {
       placeholder="Address.."
       minLength={10}
       value={address}
-    />
+    /> */}
     <div className='flex justify-between gap-3 w-full items-center'>
     <Button
       type="submit"

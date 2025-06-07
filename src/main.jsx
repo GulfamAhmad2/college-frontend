@@ -95,11 +95,15 @@
 //   </QueryClientProvider>
 // );
 
-
 import { createContext, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
 import Home from "./pages/Home.jsx";
@@ -117,51 +121,74 @@ import Principal from "./pages/About/Principal.jsx";
 import Staff from "./pages/About/Staff.jsx";
 import BscIT from "./pages/BscIT.jsx";
 import ForgotPass from "./pages/login/ForgotPass.jsx";
-import LoginVerify from "./pages/login/LoginVerify.jsx";
 import ResetPass from "./pages/login/ResetPass.jsx";
 import RegistrationVerify from "./pages/registration/RegistrationVerify.jsx";
 import Profile from "./pages/Profile.jsx";
 import { AuthProvider, useAuth } from "./AuthContext.jsx";
+import Events from "./pages/Events.jsx";
+import Resetpassotpverify from "./pages/login/Emailverifyforpassreset.jsx";
+import { EventAboutProvider } from "../hooks/EventAboutProvider.jsx";
 
 export const FormData = createContext(null);
 const queryClient = new QueryClient();
 
-const ProtectRoute = ()=>{
-  
-  const {isLoggedIn}  = useAuth();
-  
+const ProtectRoute = () => {
+  const { isLoggedIn } = useAuth();
+
   return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
-}
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <Home /> },
-      { 
-        path: "/about", 
+      {
+        path: "/",
+        element: (
+          <EventAboutProvider>
+            <Home />
+          </EventAboutProvider>
+        ),
+      },
+      {
+        path: "/about",
         element: <Abouts />,
         children: [
-          { path: "/about", element: <AboutUs /> },
+          {
+            path: "/about",
+            element: (
+              <EventAboutProvider>
+                <AboutUs />
+              </EventAboutProvider>
+            ),
+          },
           { path: "director-msg", element: <Director /> },
           { path: "principle-msg", element: <Principal /> },
           { path: "staff", element: <Staff /> },
         ],
       },
       { path: "/course", element: <BscIT /> },
-      { path: "/faculty", element: <Faculty /> },
       { path: "/resources", element: <Resources /> },
-      { path: "/attendance", element: <Attendance /> },
+      {
+        path: "/events",
+        element: (
+          <EventAboutProvider>
+            <Events />
+          </EventAboutProvider>
+        ),
+      },
       { path: "/gallery", element: <Gallery /> },
       { path: "/contact", element: <Contact /> },
-      
+
       {
-       element:<ProtectRoute/>,
-       children:[{
-        path:"/profile",
-        element:<Profile/>
-       }]
+        element: <ProtectRoute />,
+        children: [
+          {
+            path: "/profile",
+            element: <Profile />,
+          },
+        ],
       },
     ],
   },
@@ -169,7 +196,7 @@ const router = createBrowserRouter([
   { path: "/registration", element: <Register /> },
   { path: "/reg-verify", element: <RegistrationVerify /> },
   { path: "/forgot_pass", element: <ForgotPass /> },
-  { path: "/forgot_pass/otp-verify", element: <LoginVerify /> },
+  { path: "/otp-verify", element: <Resetpassotpverify /> },
   { path: "/reset-pass", element: <ResetPass /> },
 ]);
 
@@ -180,7 +207,7 @@ const RootComponent = () => {
     <QueryClientProvider client={queryClient}>
       <FormData.Provider value={{ formData, setFormData }}>
         <AuthProvider>
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
         </AuthProvider>
       </FormData.Provider>
     </QueryClientProvider>

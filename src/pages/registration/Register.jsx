@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
-import InputField from "../../components/inputFeild";
+import InputField from "../../components/InputFeild";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -14,15 +14,12 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: (newUser) =>
       apiClient({
-        url: "http://localhost:5000/api/users/registeration",
+        url: "https://college-backend-tyea.onrender.com/api/registeration",
         method: "POST",
         data: newUser,
       }),
       onSuccess:({response})=>{
         navigate("/reg-verify");
-        alert(response.data.message)
-        console.log(response)
-
       },
       onError:({response})=>{
         alert(response.data.message || "Registration failed")
@@ -39,9 +36,8 @@ const Register = () => {
     mutation.mutate(data)
     setFormData({email:data.email})
   };
-  const newPassword = watch("password");
   return (
-    <div className=" flex  gap-[50px] max-w-[1440px] w-[90%] mx-auto p-[20px] ">
+    <div className=" flex  gap-[50px] max-w-[1440px] w-[96%] mx-auto md:p-[20px] ">
       <div className="flex-1 ">
         <Link to="/" className="text-color-7 text-xl font-semibold">GVM BSC-IT</Link>
         <div className="flex flex-col items-center justify-center mx-auto mt-[20px]">
@@ -60,7 +56,7 @@ const Register = () => {
             </p>
           </div>
           <form
-            className="flex flex-col gap-[15px] w-[320px] "
+            className="flex flex-col gap-[15px] w-[300px] "
             onSubmit={handleSubmit(onSubmit)}
           >
             <InputField
@@ -81,23 +77,13 @@ const Register = () => {
               label="Email*"
             />
             <InputField
-              type="number"
-              name="phone"
-              register={register}
-              errors={errors}
-              label="Phone No.*"
-              minLength={10}
-              maxLength={10}
-            />
-            <InputField
-              type="number"
+              type="tel"
               name="roll"
               register={register}
               errors={errors}
-              label="Roll No.*"
-              minLength={0}
-              maxLength={10}
+              label="Roll number*"
             />
+            
             <div className="">
               <span className="text-[#999999] text-[13px] font-medium">
                 Select Year*
@@ -145,25 +131,7 @@ const Register = () => {
               minLength={6}
               maxLength={30}
             />
-            <InputField
-              type="password"
-              name="conpass"
-              register={register}
-              errors={errors}
-              label="Confirm Password"
-              validate={(value) =>
-                value === newPassword || "Passwords do not match!"
-              }
-            />
-            <InputField
-              type="textarea"
-              name="address"
-              register={register}
-              errors={errors}
-              placeholder="Address.."
-              label="Address*"
-              minLength={10}
-            />
+            
             <Button
               type="submit"
               disabled={mutation.isPending}

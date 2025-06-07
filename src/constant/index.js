@@ -12,11 +12,12 @@ export const navigation = [
   { id: 6, title: "Home", url: "/" },
   {
     id: 1,
-    title: "About Us",
+    title: "About",
     icon: arrow,
-    url: "/about",
+    url: "#",
     child: [
-      { id: 1, title: "Director Message", url: "/about/director-msg" },
+      { id: 1, title: "About Us", url: "/about" },
+      { id: 4, title: "Director Message", url: "/about/director-msg" },
       { id: 2, title: "Principle Message", url: "/about/principle-msg" },
       { id: 3, title: "Our Staff", url: "/about/staff" },
     ],
@@ -27,6 +28,7 @@ export const navigation = [
     url: "/course",
   },
   { id: 3, title: "Resources", url: "/resources" },
+  { id: 6, title: "Events", url: "/events" },
   { id: 4, title: "Gallery", url: "/gallery" },
   { id: 5, title: "Contact", url: "/contact" },
   // { id: 7, title: "Registration", url: "/contact" },
@@ -257,7 +259,6 @@ export const dropDownDetails = {
 
 export const mockData = {
   FY: {
-    2024: {
       "Sem 1": [
         {
           subjectName: "Mathematics 1",
@@ -432,7 +433,6 @@ export const mockData = {
           ],
         },
       ],
-    },
 
     // More years...
   },
@@ -830,3 +830,30 @@ export const gallery = [
   { id: 9, img: staff_3 },
 ];
 
+export const galleryPhoto = [
+  {
+    id: 1,
+    title: "new image",
+    image: [
+      { id: 1, img: staff_1 },
+      { id: 2, img: staff_2 },
+      { id: 3, img: staff_3 },
+      { id: 4, img: staff_4 },
+      { id: 5, img: staff_5 },
+      { id: 6, img: staff_6 },
+    ],
+  },
+  {
+    id: 2,
+    title: "tour image",
+    image: [
+      { id: 1, img: staff_1 },
+      { id: 2, img: staff_2 },
+      { id: 3, img: staff_3 },
+      { id: 4, img: staff_4 },
+      { id: 5, img: staff_5 },
+      { id: 6, img: staff_6 },
+    ],
+  },
+  // and so on ....
+];

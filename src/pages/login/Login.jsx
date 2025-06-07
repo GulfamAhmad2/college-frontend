@@ -13,10 +13,10 @@ const Login = () => {
   const { login, setUserData} = useAuth();
 
   const navigate = useNavigate();
-  const mutation = useMutation({
+  const loginMutation = useMutation({
     mutationFn: (loginData) =>
       apiClient({
-        url: "http://localhost:5000/api/users/login",
+        url: "https://college-backend-tyea.onrender.com/api/login",
         method: "POST",
         data: loginData,
       }),
@@ -24,7 +24,6 @@ const Login = () => {
       setUserData(data?.user);
       login()
       navigate("/")
-      console.log(data, 'data')
     },
     onError: (err) => {
       alert(err.response.data.message);
@@ -37,16 +36,16 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    mutation.mutate(data);
+    loginMutation.mutate(data);
   };
   
   return (
-    <div className="flex gap-[50px] max-w-[1440px] w-[90%] mx-auto p-[20px] h-[100vh]">
+    <div className="flex gap-[50px] max-w-[1440px] w-[96%] mx-auto md:p-[20px] h-[100vh]">
       <div className="flex-1 ">
         <Link to="/" className="text-color-7 text-xl font-semibold">
           GVM BSC-IT
         </Link>
-        <div className="flex flex-col mx-auto mt-[90px]">
+        <div className="flex flex-col items-center justify-center mx-auto mt-[90px]">
           <div className="mb-[50px]">
             <h2 className="text-color-7 text-3xl font-medium mb-[22px]">
               Sign In
@@ -62,7 +61,7 @@ const Login = () => {
             </p>
           </div>
           <form
-            className="flex flex-col gap-[30px] w-[320px]"
+            className="flex flex-col gap-[30px] w-[300px]"
             onSubmit={handleSubmit(onSubmit)}
           >
             <InputField
@@ -95,15 +94,14 @@ const Login = () => {
             </div>
             <Button
               type="submit"
-              lable="Login"
+              lable={loginMutation.isPending ? "Loading..." : "Login"}
               btnClass="bg-[#0c21c1] rounded-[24px] text-white text-[17px] font-medium text-center py-[14px] active:scale-95 duration-300"
             >
-              Login
             </Button>
           </form>
         </div>
       </div>
-      <div className="flex-1 bg-[#000741] flex items-center justify-center h-full rounded-[6px]">
+      <div className="flex-1 hidden bg-[#000741] md:flex  md:block items-center justify-center h-full rounded-[6px]">
         <img src={loginSide} />
       </div>
     </div>
